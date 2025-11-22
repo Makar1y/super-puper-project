@@ -50,18 +50,24 @@ body {
 
 /* ------------ HOTEL -------------- */
 
+section {
+  color: white;
+  margin: 5vh;
+}
+
 .hotel {
   border-radius: 25px;
   border: 1px solid rgba(255, 255, 255, 0.15);
   padding: 15px;
   display: flex;
   flex-direction: column;
+  flex-direction: column;
   height: fit-content;
 }
 
 .hotel-image {
-  aspect-ratio: 3/2;
-  width: 100%;
+  aspect-ratio: 16/9;
+  width: 50%;
   border-radius: 14px;
   border: 1px solid rgba(255, 255, 255, 0.15);
   overflow: hidden;
@@ -86,6 +92,7 @@ body {
   gap: 1vh;
 }
 
+/* preserve existing detail rules */
 .hotel-details .hotel-name {
   font-size: 25px;
   font-weight: bold;
@@ -97,7 +104,6 @@ body {
   flex-wrap: wrap;
   gap: 0.5vh;
   overflow: hidden;
-
   justify-content: flex-start;
 }
 
@@ -106,9 +112,8 @@ body {
   border-radius: 12px;
   background: rgba(12, 213, 248, 0.2);
   border: 1px solid rgba(255, 255, 255, 0.15);
-  font-size: calc(0.6em + 1vmin);;
+  font-size: calc(0.6em + 1vmin);
   letter-spacing: 0.05vw;
-  text-wrap: nowrap;
 }
 
 .hotel-details .location {
@@ -131,33 +136,38 @@ body {
 
 .hotel-details .hotel-description p {
   font-size: calc(0.7em + 0.6vmin);
-  display: -webkit-box;
-  -webkit-line-clamp: 3; /* number of lines (adjust as needed) */
-  -webkit-box-orient: vertical;
   overflow: hidden;
-}
-
-.hotel-details .button button {
-  width: 100%;
-  padding: 12px;
-  font-size: 16px;
-  border-radius: 10px;
-  border: none;
-  cursor: pointer;
-  background: rgba(0, 255, 255, 0.25);
-  color: white;
-  transition: 0.3s;
-}
-
-.hotel-details .button button:hover {
-  background: rgba(0, 255, 255, 0.45);
-  box-shadow: 0 0 12px #00eaff;
 }
 
 .glass {
   background: rgba(255, 255, 255, 0.05);
   backdrop-filter: blur(10px);
 }
+
+/* BOOKING FORM */
+
+ /* .book {
+  display: flex;
+  flex-direction: column;
+ } */
+
+ form {
+  display: flex;
+  flex-direction: column;
+ }
+
+ .form-element {
+  align-self: center;
+  text-align: center;
+  width: 100%;
+ }
+
+ .book h2 {
+  font-size: 25px;
+  font-weight: bold;
+  text-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff, 0 0 30px #00ffff;
+ }
+
 
 @media (max-width: 500px) {
   body {

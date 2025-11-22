@@ -26,7 +26,7 @@ const hotels = [
         image: "/Images/hotel2.jpg"
     },
     {
-        name: "Earth Circle – New Horizon",
+        name: "Earth Circle - New Horizon",
         location: "Earth",
         price: 50999.99,
         amenities: [

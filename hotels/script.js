@@ -31,6 +31,14 @@ function createHotelCard(hotel) {
     priceDiv.textContent = `${hotel.price.toLocaleString()}€ / 24h`;
     hotelDetails.appendChild(priceDiv);
 
+    const descriptionDiv = document.createElement("div");
+    descriptionDiv.className = "detail hotel-description";
+
+    const p = document.createElement("p");
+    p.textContent = hotel.description;
+    descriptionDiv.appendChild(p);
+    hotelDetails.appendChild(descriptionDiv);
+
     const amenitiesDiv = document.createElement("div");
     amenitiesDiv.className = "detail hotel-amenities";
     hotel.amenities.forEach((amenity) => {
@@ -40,13 +48,6 @@ function createHotelCard(hotel) {
     });
     hotelDetails.appendChild(amenitiesDiv);
 
-    const descriptionDiv = document.createElement("div");
-    descriptionDiv.className = "detail hotel-description";
-
-    const p = document.createElement("p");
-    p.textContent = hotel.description;
-    descriptionDiv.appendChild(p);
-    hotelDetails.appendChild(descriptionDiv);
     hotelCard.appendChild(hotelDetails);
 
     return hotelCard;
@@ -58,9 +59,14 @@ document.addEventListener("DOMContentLoaded", () => {
     const hotelName = params.get("hotel");
 
     const hotel = hotels.find(hotel => hotel.name === hotelName);
-    if (hotel) {
-        hotelSection.appendChild(createHotelCard(hotel));
+    if (hotelName != null) {
+        if (hotel) {
+            hotelSection.appendChild(createHotelCard(hotel));
+        } else {
+            window.location.replace("/hotels/" + hotelName);
+        }
     } else {
-        window.location.replace("/hotels/" + hotelName);
+        window.location.replace("/");
     }
+    
 });
