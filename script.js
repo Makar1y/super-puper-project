@@ -1,0 +1,71 @@
+import hotels from "./hotels.js";
+
+function createHotelCard(hotel) {
+    const hotelCard = document.createElement("div");
+    hotelCard.className = "hotel glass";
+
+    const hotelImage = document.createElement("div");
+    hotelImage.className = "hotel-image";
+
+    const img = document.createElement("img");
+    img.src = hotel.image;
+    img.alt = "Hotel image";
+    hotelImage.appendChild(img);
+    hotelCard.appendChild(hotelImage);
+
+    const hotelDetails = document.createElement("div");
+    hotelDetails.className = "hotel-details glass";
+
+    const nameDiv = document.createElement("div");
+    nameDiv.className = "detail hotel-name";
+    nameDiv.textContent = hotel.name;
+    hotelDetails.appendChild(nameDiv);
+
+    const locationDiv = document.createElement("div");
+    locationDiv.className = "detail location";
+    locationDiv.textContent = hotel.location;
+    hotelDetails.appendChild(locationDiv);
+
+    const priceDiv = document.createElement("div");
+    priceDiv.className = "detail hotel-price";
+    priceDiv.textContent = `${hotel.price.toLocaleString()}€ / 24h`;
+    hotelDetails.appendChild(priceDiv);
+
+    const amenitiesDiv = document.createElement("div");
+    amenitiesDiv.className = "detail hotel-amenities";
+    hotel.amenities.forEach((amenity) => {
+        const span = document.createElement("span");
+        span.textContent = amenity;
+        amenitiesDiv.appendChild(span);
+    });
+    hotelDetails.appendChild(amenitiesDiv);
+
+    const descriptionDiv = document.createElement("div");
+    descriptionDiv.className = "detail hotel-description";
+
+    const p = document.createElement("p");
+    p.textContent = hotel.description;
+    descriptionDiv.appendChild(p);
+    hotelDetails.appendChild(descriptionDiv);
+
+    const buttonDiv = document.createElement("div");
+    buttonDiv.className = "detail button";
+
+    const button = document.createElement("button");
+    button.textContent = "Details";
+    buttonDiv.appendChild(button);
+    hotelDetails.appendChild(buttonDiv);
+    hotelCard.appendChild(hotelDetails);
+
+    return hotelCard;
+}
+
+document.querySelector
+
+document.addEventListener("DOMContentLoaded", () => {
+    const hotelsGrid = document.querySelector(".hotels-grid");
+    hotels.forEach(hotel => {
+        const hotelCard = createHotelCard(hotel);
+        hotelsGrid.appendChild(hotelCard);
+    });
+});
