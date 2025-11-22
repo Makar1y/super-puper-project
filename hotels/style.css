@@ -1,10 +1,11 @@
 body {
-  background-image: url(Images/background.png);
+  background-image: url(/Images/background.png);
   background-repeat: no-repeat;
   background-position: center;
   background-attachment: fixed;
   background-size: cover;
 }
+
 
 .header {
   margin: 20px 40px 0px 40px;
@@ -39,64 +40,6 @@ body {
   font-size: 70px;
 }
 
-.selections {
-  background: rgba(255, 255, 255, 0.01);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  display: flex;
-  justify-content: space-around;
-  flex-wrap: wrap;
-  gap: 1vh;
-  align-self: center;
-  border: 1px solid;
-  width: 90%;
-  padding: 15px;
-  border-radius: 5px;
-  border-color: rgb(31, 113, 190);
-  border-width: 2px;
-  margin: auto 0;
-}
-
-.search-text {
-  width: 50%;
-  background: transparent;
-  border-radius: 5px;
-  border-color: rgb(31, 113, 190);
-  border-width: 2px;
-  color: white;
-}
-
-.selections select,
-.date select {
-  color: white;
-}
-
-select {
-  background: transparent;
-}
-
-.date {
-  background: transparent;
-  color: white;
-}
-
-.date,
-.orbit,
-.planet,
-.search_button {
-  padding: 5px;
-  width: 120px;
-  border-radius: 5px;
-  border-color: rgb(31, 113, 190);
-  border-width: 2px;
-}
-
-.search_button {
-  background: transparent;
-  color: white;
-  cursor: pointer;
-}
-
 .name,
 .nav-buttons,
 .title-text {
@@ -105,35 +48,7 @@ select {
     0 0 82px blue, 0 0 92px blue, 0 0 102px blue, 0 0 151px blue;
 }
 
-/* ------------ HOTELS -------------- */
-.hotels-list {
-  display: flex;
-  flex-direction: column;
-  gap: 3vw;
-  margin: 3vw;
-  color: white;
-}
-
-.search-line {
-  display: flex;
-  flex-direction: column;
-  flex-wrap: wrap;
-  justify-content: space-around;
-}
-
-.search-line h2 {
-  font-size: calc(2em + 2vmin);
-  text-shadow: 0 0 26px #00ffff;
-  color: white;
-  text-align: center;
-}
-
-.hotels-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-  width: 100%;
-  gap: 1vw;
-}
+/* ------------ HOTEL -------------- */
 
 .hotel {
   border-radius: 25px;
@@ -247,20 +162,5 @@ select {
 @media (max-width: 500px) {
   body {
     background-attachment: scroll;
-  }
-
-  .selections select,
-  .search-text,
-  .date,
-  .search_button {
-    width: 100%;
-  }
-
-  .hotels-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .hotel-details .hotel-description p {
-    -webkit-line-clamp: 4;
   }
 }
