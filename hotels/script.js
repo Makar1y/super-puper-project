@@ -34,14 +34,24 @@ function createHotelCard(hotel) {
     descriptionDiv.appendChild(p);
     hotelDetails.appendChild(descriptionDiv);
 
-    const amenitiesDiv = document.createElement("div");
-    amenitiesDiv.className = "detail hotel-amenities";
+    const amenitiesContainer = document.createElement("div");
+    amenitiesContainer.className = "detail hotel-amenities-container";
+
+    const amenitiesHeader = document.createElement("h3");
+    amenitiesHeader.className = "hotel-amenities-header";
+    amenitiesHeader.textContent = "Amenities:";
+    amenitiesContainer.appendChild(amenitiesHeader);
+
+    const amenitiesList = document.createElement("ul");
+    amenitiesList.className = "hotel-amenities";
+    
     hotel.amenities.forEach((amenity) => {
-        const span = document.createElement("span");
-        span.textContent = amenity;
-        amenitiesDiv.appendChild(span);
+        const li = document.createElement("li");
+        li.textContent = amenity;
+        amenitiesList.appendChild(li);
     });
-    hotelDetails.appendChild(amenitiesDiv);
+    amenitiesContainer.appendChild(amenitiesList);
+    hotelDetails.appendChild(amenitiesContainer);
 
     hotelCard.appendChild(hotelDetails);
 

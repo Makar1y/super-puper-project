@@ -56,7 +56,6 @@ body {
   gap: 3vw;
 }
 
-
 section {
   color: white;
 }
@@ -104,21 +103,40 @@ section {
   text-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff, 0 0 30px #00ffff;
 }
 
-.hotel-details .hotel-amenities {
+.hotel-details .hotel-amenities-container {
   display: flex;
-  flex-wrap: wrap;
-  gap: 0.5vh;
-  overflow: hidden;
-  justify-content: flex-start;
+  flex-direction: column;
+  gap: 5px;
 }
 
-.hotel-details .hotel-amenities span {
-  padding: 6px 12px;
-  border-radius: 12px;
-  background: rgba(12, 213, 248, 0.2);
-  border: 1px solid rgba(255, 255, 255, 0.15);
+.hotel-details .hotel-amenities-header {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin: 0;
+  color: #00eaff;
+  text-shadow: 0 0 8px #00eaff;
+}
+
+.hotel-details .hotel-amenities {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 5px 20px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.hotel-details .hotel-amenities li {
+  position: relative;
+  padding-left: 15px;
   font-size: calc(0.6em + 1vmin);
-  letter-spacing: 0.05vw;
+}
+
+.hotel-details .hotel-amenities li::before {
+  content: "•";
+  color: #00eaff;
+  position: absolute;
+  left: 0;
 }
 
 .hotel-details .location {
@@ -147,21 +165,22 @@ section {
   width: 30%;
   position: sticky;
   top: 5vh;
+  bottom: 5vh;
   height: 60vh;
 }
 
 form {
   display: flex;
   flex-direction: column;
- }
+}
 
- .form-element {
+.form-element {
   align-self: center;
   text-align: center;
   width: 100%;
- }
+}
 
- .form-element span {
+.form-element span {
   font-size: 22px;
   font-weight: bold;
   margin-top: 0.2vh;
@@ -169,15 +188,14 @@ form {
   text-shadow: 0 0 8px #00eaff;
 }
 
- .book h2 {
+.book h2 {
   font-size: 25px;
   font-weight: bold;
   text-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff, 0 0 30px #00ffff;
- }
-
+}
 
 @media (max-width: 500px) {
-  body {
+  /* body {
     background-attachment: scroll;
-  }
+  } */
 }
