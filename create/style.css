@@ -7,34 +7,16 @@ body {
 }
 
 .header {
-  margin: 20px 40px 0px 40px;
+  margin: 3vh 40px 2vh 40px;
   height: 50px;
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 1vh;
+  justify-content: center;
 }
 
 .name {
-  font-size: 35px;
+  font-size: 6vh;
   cursor: pointer;
   text-decoration: none;
-}
-
-.left-header {
-  display: flex;
-}
-
-.nav-buttons {
-  font-size: 15px;
-  margin: 0 40px;
-  cursor: pointer;
-  text-decoration: none;
-}
-
-.name,
-.nav-buttons {
   color: white;
   text-shadow: 0 0 7px #fff, 0 0 10px #fff, 0 0 21px #fff, 0 0 42px blue,
     0 0 82px blue, 0 0 92px blue, 0 0 102px blue, 0 0 151px blue;
@@ -133,4 +115,16 @@ select:focus {
 .glass {
   background: rgba(255, 255, 255, 0.05);
   backdrop-filter: blur(10px);
+}
+
+@media (max-width: 768px) {
+  .name {
+    font-size: 5vh;
+  }
+}
+
+@media (max-width: 500px) {
+  .name {
+    font-size: 4vh;
+  }
 }
