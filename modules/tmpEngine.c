@@ -33,12 +33,8 @@ typedef struct {
     unsigned int size;
 } Block_manager;
 
-Block_manager block_manager = {0};
-char request_url[MAX_REQUEST_URL_LENGTH];
 
-
-
-void serve_block(char *buffer, char *block_name_start, unsigned int line, FILE *template_file, FILE *output_file) {
+void serve_block(char *buffer, char *block_name_start, unsigned int line, FILE *template_file, FILE *output_file, Block_manager block_manager, char *request_url) {
     char *block_name_end = strstr(block_name_start, BLOCK_POSTFIX);
 
     if (block_name_end) {
@@ -106,6 +102,8 @@ void serve_block(char *buffer, char *block_name_start, unsigned int line, FILE *
 void template_to_html(FILE *html_template, char *target_filename) {
     char *buffer = malloc(sizeof(char) * LINE_BUFFER_SIZE);
     FILE *output_file = fopen(target_filename, "w");
+    char request_url[MAX_REQUEST_URL_LENGTH];
+    Block_manager block_manager = {0};
     unsigned int line = 0;
 
     while (fgets(buffer, LINE_BUFFER_SIZE, html_template)) {
@@ -117,7 +115,7 @@ void template_to_html(FILE *html_template, char *target_filename) {
             printf("%u, %s \n", line, request_url);
 
         if (block_name_start) { // block serving
-            serve_block(buffer, block_name_start, line, html_template, output_file);
+            serve_block(buffer, block_name_start, line, html_template, output_file, block_manager, request_url);
         }
 
         #if 0
