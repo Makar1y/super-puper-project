@@ -61,7 +61,7 @@ int handle_block_end(Block_manager *block_manager, FILE *template_file, FILE *ou
 }
 
 int replace_tag(FILE *output_file, unsigned int line, char *buffer, char *tag_name_start, char *tag_name_end, char *json_value) {
-    if (fwrite(buffer, sizeof(int), tag_name_start - buffer, output_file)) {
+    if (fwrite(buffer, sizeof(char), tag_name_start - buffer, output_file)) {
         if (fputs(json_value, output_file)) {
             if (fputs(tag_name_end + strlen(TAG_POSTFIX), output_file)) {
                 return 1;

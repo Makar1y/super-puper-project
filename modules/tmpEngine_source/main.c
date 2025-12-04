@@ -15,7 +15,7 @@ int serve_block(Block_manager *block_manager, FILE *html_template, FILE *output_
     char *block_name_end = find_block_end(block_name_start);
 
     if ( !block_name_end ) {
-        fprintf(stderr, "%s Block not closed with '%s'!\n (html line %u)\n", ERROR_PREFIX, BLOCK_POSTFIX, line);
+        fprintf(stderr, "%s Block not closed with '%s'! (html line %u)\n", ERROR_PREFIX, BLOCK_POSTFIX, line);
         return 0;
     }
 
@@ -51,7 +51,7 @@ int serve_tag(FILE *output_file, unsigned int line, char *buffer, char *tag_name
     char json_value[NAME_BUFFER_SIZE];
 
     if ( !tag_name_end ) {
-        fprintf(stderr, "%s Tag not closed with '%s'!\n (html line %u)\n", ERROR_PREFIX, TAG_POSTFIX, line);
+        fprintf(stderr, "%s Tag not closed with '%s'! (html line %u)\n", ERROR_PREFIX, TAG_POSTFIX, line);
         return 0;
     }
 
@@ -66,7 +66,7 @@ int serve_tag(FILE *output_file, unsigned int line, char *buffer, char *tag_name
     if (replace_tag(output_file, line, buffer, tag_name_start, tag_name_end, json_value)) {
         return 1;
     }
-    fprintf(stderr, "%s Replace tag to value unsuccessful!\n (html line %u)\n", ERROR_PREFIX, line);
+    fprintf(stderr, "%s Replacing tag to value unsuccessful! (html line %u)\n", ERROR_PREFIX, line);
     return 0;
 }
 
@@ -79,13 +79,13 @@ int process_line(Block_manager *block_manager, FILE *html_template, FILE *output
         if (serve_block(block_manager, html_template, output_file, line, buffer, block_start, request_url)) {
             return 3;
         } else {
-            fprintf(stderr, "%s Processing line unsuccessful!\n (html line %u)\n", ERROR_PREFIX, line);
+            fprintf(stderr, "%s Processing line unsuccessful! (html line %u)\n", ERROR_PREFIX, line);
         }
     } else if (tag_start) {
         if (serve_tag(output_file, line, buffer, tag_start, request_url)) {
             return 2;
         } else {
-            fprintf(stderr, "%s Processing line unsuccessful!\n (html line %u)\n", ERROR_PREFIX, line);
+            fprintf(stderr, "%s Processing line unsuccessful! (html line %u)\n", ERROR_PREFIX, line);
         }
     } else {
         fputs(buffer, output_file);
