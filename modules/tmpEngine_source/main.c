@@ -5,11 +5,12 @@
 #include "settings.h"
 #include "block_manager.h"
 #include "html_parsing.h"
-#include "block_serving.h"
+#include "blocks_serving.h"
 
+// TODO errors tracebacks
 
-void serve_block(Block_manager *block_manager, FILE *html_template, FILE *output_file, unsigned int line, char *buffer, \
-                    char *block_name_start, char* tag_start, char *request_url) {
+int serve_block(Block_manager *block_manager, FILE *html_template, FILE *output_file, unsigned int line, char *buffer, \
+                    char *block_name_start, char *request_url) {
     char block_name[LINE_BUFFER_SIZE];
     char *block_name_end = find_block_end(block_name_start);
 
@@ -24,87 +25,103 @@ void serve_block(Block_manager *block_manager, FILE *html_template, FILE *output
     }
 
     if (strcmp(block_name, END_NAME) == 0) {
-        handle_block_end(block_manager, html_template, output_file, line, block_name_end, request_url);
+        if ( !handle_block_end(block_manager, html_template, output_file, line, block_name_end, request_url) ) {
+            return 0;
+        }
     } else {
         Block *current_block = block_top(block_manager);
         if (current_block && strcmp(current_block->name, block_name) == 0) {
-            handle_block_repeat(output_file, line, buffer, block_name_end);
+            if ( !handle_block_repeat(output_file, line, buffer, block_name_end) ) {
+                return 0;
+            }
         } else {
             if ( !handle_block_open(block_manager, output_file, line, buffer, block_name_start, block_name, block_name_end, request_url) ) {
-                error_serving_block();
+                return 0;
             }
         }
     }
+    return 1;
 }
 
 
-void serve_tag(Block_manager *block_manager, FILE *html_template, FILE *output_file, unsigned int line, char *buffer, \
-                    char *block_name_start, char* tag_start, char *request_url) {
-    char block_name[LINE_BUFFER_SIZE];
-    char *block_name_end = find_block_end(block_name_start);
+int serve_tag(FILE *output_file, unsigned int line, char *buffer, char *tag_name_start, char *request_url) {
+    char search_url[NAME_BUFFER_SIZE];
+    char *tag_name_end = find_tag_end(tag_name_start);
+    char tag_name[LINE_BUFFER_SIZE];
+    char json_value[NAME_BUFFER_SIZE];
 
-    if ( !block_name_end ) {
-        fprintf(stderr, "%s Block not closed with '%s'!\n (html line %u)\n", ERROR_PREFIX, BLOCK_POSTFIX, line);
+    if ( !tag_name_end ) {
+        fprintf(stderr, "%s Tag not closed with '%s'!\n (html line %u)\n", ERROR_PREFIX, TAG_POSTFIX, line);
         return 0;
     }
 
-    if ( !parse_block_name(block_name_start, block_name) ) {
-        fprintf(stderr, "%s Missing block name inside '%s %s' block! (html line %u)\n", ERROR_PREFIX, BLOCK_PREFIX, BLOCK_POSTFIX, line);
-        return 0;
+    strcpy(search_url, request_url);
+    if (parse_tag_name(tag_name_start, tag_name)) {
+        strcat(search_url, ".");
+        strcat(search_url, tag_name);
     }
 
-    if (strcmp(block_name, END_NAME) == 0) {
-        handle_block_end(block_manager, html_template, output_file, line, block_name_end, request_url);
-    } else {
-        Block *current_block = block_top(block_manager);
-        if (current_block && strcmp(current_block->name, block_name) == 0) {
-            handle_block_repeat(output_file, line, buffer, block_name_end);
-        } else {
-            if ( !handle_block_open(block_manager, output_file, line, buffer, block_name_start, block_name, block_name_end, request_url) ) {
-                error_serving_block();
-            }
-        }
+    strcpy(json_value, "TEST"); // TODO Add funcfrom json parser
+
+    if (replace_tag(output_file, line, buffer, tag_name_start, tag_name_end, json_value)) {
+        return 1;
     }
+    fprintf(stderr, "%s Replace tag to value unsuccessful!\n (html line %u)\n", ERROR_PREFIX, line);
+    return 0;
 }
 
 
-void process_line(Block_manager *block_manager, FILE *html_template, FILE *output_file, unsigned int line, char *buffer, char *request_url) {
+int process_line(Block_manager *block_manager, FILE *html_template, FILE *output_file, unsigned int line, char *buffer, char *request_url) {
     char *block_start = find_block_start(buffer);
     char *tag_start   = find_tag_start(buffer);
 
-    if (block_start)
-        serve_block(block_manager, html_template, output_file, line, buffer, block_start, tag_start, request_url);
-    else if (tag_start)
-        serve_tag(buffer, tag_start);
-    else
+    if (block_start) {
+        if (serve_block(block_manager, html_template, output_file, line, buffer, block_start, request_url)) {
+            return 3;
+        } else {
+            fprintf(stderr, "%s Processing line unsuccessful!\n (html line %u)\n", ERROR_PREFIX, line);
+        }
+    } else if (tag_start) {
+        if (serve_tag(output_file, line, buffer, tag_start, request_url)) {
+            return 2;
+        } else {
+            fprintf(stderr, "%s Processing line unsuccessful!\n (html line %u)\n", ERROR_PREFIX, line);
+        }
+    } else {
         fputs(buffer, output_file);
+        return 1;
+    }
+    return 0;
 }
 
 
 
-void template_to_html(FILE *html_template, char *target_filename) {
+int template_to_html(FILE *html_template, char *target_filename) {
     FILE *output_file = fopen(target_filename, "w");
     if ( !output_file ) {
         perror(target_filename);
-        return;
+        return 0;
     }
 
     char buffer[LINE_BUFFER_SIZE];
-    char request_url[MAX_REQUEST_URL_LENGTH] = {0};
+    char request_url[NAME_BUFFER_SIZE] = {0};
     Block_manager block_manager = {0};
 
     unsigned line = 0;
     while (fgets(buffer, LINE_BUFFER_SIZE, html_template)) {
         ++line;
-        process_line(&block_manager, html_template, output_file, line, buffer, request_url);
+        if ( !process_line(&block_manager, html_template, output_file, line, buffer, request_url) ) {
+            return 0;
+        }
     }
 
     destroy_block_manager(&block_manager);
     fclose(output_file);
+    return 1;
 }
 
 int main() {
-    FILE *test_template = fopen("../templates/template.html", "r");
+    FILE *test_template = fopen("../../templates/template.html", "r");
     
     if (test_template) {
         template_to_html(test_template, "index.html");

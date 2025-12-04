@@ -3,7 +3,7 @@
 
 // Sizes
 #define LINE_BUFFER_SIZE 256
-#define MAX_REQUEST_URL_LENGTH 256
+#define NAME_BUFFER_SIZE 256
 
 // Other
 #define ERROR_PREFIX  "!!! ERROR: "
@@ -18,8 +18,5 @@
 #define TAG_PREFIX "{{"
 #define TAG_POSTFIX "}}"
 #define TAG_NAME_SCAN_FORMAT "{{ %[^{} ] }}"
-
-// If you change code and something is not working :)
-#define DEBUG
 
 #endif

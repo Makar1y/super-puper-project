@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 
 #include "settings.h"
 #include "block_manager.h"
@@ -56,5 +57,17 @@ int handle_block_end(Block_manager *block_manager, FILE *template_file, FILE *ou
     } else {
         fprintf(stderr, "%s Ending block without opened one! (html line %u)\n", ERROR_PREFIX, line);
     }
+    return 0;
+}
+
+int replace_tag(FILE *output_file, unsigned int line, char *buffer, char *tag_name_start, char *tag_name_end, char *json_value) {
+    if (fwrite(buffer, sizeof(int), tag_name_start - buffer, output_file)) {
+        if (fputs(json_value, output_file)) {
+            if (fputs(tag_name_end + strlen(TAG_POSTFIX), output_file)) {
+                return 1;
+            }
+        }
+    }
+    fprintf(stderr, "%s Writing to output file unsuccessful! (html line %u)\n", ERROR_PREFIX, line);
     return 0;
 }
