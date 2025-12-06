@@ -1,0 +1,6 @@
+{
+  "files.associations": {
+    "*.html": "html",
+    "module1.h": "c"
+  }
+}
